@@ -4,3 +4,4 @@
 /source
 *.jpg
 *.jpeg
+/training/datasets

@@ -7,8 +7,8 @@ from ultralytics import YOLO
 # # Load a pretraind YOLOv8n detection model, train it on COCO128 for 3 epochs and predict an image with it
 # from ultralytics import YOLO
 
-model = YOLO('yolo11l.pt')  # load a pretrained YOLOv8n detection model
-model.train(data='custom.yaml', epochs=20, imgsz=640)  # train the model
+model = YOLO('yolo11s.pt')  # load a pretrained YOLOv8n detection model
+model.train(data='custom.yaml', epochs=1, batch=4, cache=True)  # train the model
 
 # yolo task=detect mode=train model=yolov8n.pt data=custom.yaml epochs=300 imgsz=640
 
