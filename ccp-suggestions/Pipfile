@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+matplotlib = "*"
+numpy = "*"
+opencv-python = "*"
+pandas = "*"
+pillow = "*"
+imread-from-url = "*"
+onnxruntime-gpu = "*"
+cap-from-youtube = "*"
+onnxruntime-directml = "*"
+ultralytics = "*"
+pika = "*"
+google-cloud-pubsub = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.13"

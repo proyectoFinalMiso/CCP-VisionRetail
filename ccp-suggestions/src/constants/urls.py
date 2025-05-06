@@ -1,0 +1,1 @@
+rabbit_mq_url = "http://localhost:5672/"
