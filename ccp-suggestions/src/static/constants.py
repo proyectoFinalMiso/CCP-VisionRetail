@@ -1,0 +1,1 @@
+model_path = "src/model/bestv8.pt"

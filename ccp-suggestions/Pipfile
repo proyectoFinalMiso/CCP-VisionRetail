@@ -16,6 +16,9 @@ onnxruntime-directml = "*"
 ultralytics = "*"
 pika = "*"
 google-cloud-pubsub = "*"
+python-dotenv = "*"
+Flask = "*"
+waitress = "*"
 
 [dev-packages]
 
