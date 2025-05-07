@@ -1,1 +1,4 @@
 model_path = "src/model/bestv8.pt"
+json_key = "proyecto-final-452402-6a01c80ff516.json"
+bucket_image_folder = "buffered-keyframes"
+bucket_name = "ccp-recommendations-videos"

@@ -19,6 +19,7 @@ google-cloud-pubsub = "*"
 python-dotenv = "*"
 Flask = "*"
 waitress = "*"
+google-cloud-storage = "*"
 
 [dev-packages]
 
