@@ -1069,20 +1069,18 @@
         },
         "protobuf": {
             "hashes": [
-                "sha256:13eb236f8eb9ec34e63fc8b1d6efd2777d062fa6aaa68268fb67cf77f6839ad7",
-                "sha256:1832f0515b62d12d8e6ffc078d7e9eb06969aa6dc13c13e1036e39d73bebc2de",
-                "sha256:307ecba1d852ec237e9ba668e087326a67564ef83e45a0189a772ede9e854dd0",
-                "sha256:3fde11b505e1597f71b875ef2fc52062b6a9740e5f7c8997ce878b6009145862",
-                "sha256:476cb7b14914c780605a8cf62e38c2a85f8caff2e28a6a0bad827ec7d6c85d68",
-                "sha256:4f1dfcd7997b31ef8f53ec82781ff434a28bf71d9102ddde14d076adcfc78c99",
-                "sha256:678974e1e3a9b975b8bc2447fca458db5f93a2fb6b0c8db46b6675b5b5346812",
-                "sha256:aec4962f9ea93c431d5714ed1be1c93f13e1a8618e70035ba2b0564d9e633f2e",
-                "sha256:bcefcdf3976233f8a502d265eb65ea740c989bacc6c30a58290ed0e519eb4b8d",
-                "sha256:d7d3f7d1d5a66ed4942d4fefb12ac4b14a29028b209d4bfb25c68ae172059922",
-                "sha256:fd32223020cb25a2cc100366f1dedc904e2d71d9322403224cdde5fdced0dabe"
+                "sha256:2798c9dc301b28711427d9804169e8aa8fa98b53c6609c3b84312ee745412ea0",
+                "sha256:324e9ca0bc5c029aa1132c6b900d1f0e2f0fbec151fdce93446c6fc5b32fb6e2",
+                "sha256:3756ad71c3b0655b3a355f14ac28a7e421aa4d67340fade161e031e7bde886a5",
+                "sha256:4af67b39e0897fc51c20414cdb7e1aa2742f7a20545c4c3d5df44a8f1c99d1a7",
+                "sha256:8afb806a7c429336308fa17d2209744f79f1c74f060f78bfd65a5043e33b124f",
+                "sha256:d263d3529a285deceb8417d018a56a97e373001366e2eeeba9f840a1a16afeb2",
+                "sha256:d6b4ce0ccc00c9aba7b9ea4e45af49e307bdb987cbc67e92d1a1a4b04b412628",
+                "sha256:f7a133bd281dec25311b3c99ab00e5631710bb4bce66471ac52e472a12f4f73e",
+                "sha256:f94c0443af0a9121c6b57b1b5dfcc16956a6d58aedb2adda4e013532744dba61"
             ],
-            "markers": "python_version >= '3.8'",
-            "version": "==5.29.4"
+            "markers": "python_version >= '3.9'",
+            "version": "==6.31.0rc2"
         },
         "psutil": {
             "hashes": [
@@ -1300,11 +1298,11 @@
         },
         "setuptools": {
             "hashes": [
-                "sha256:20fe373a22ef9f3925512650d1db90b1b8de01cdb6df91ab1788263139cbf9a2",
-                "sha256:f4b49d457765b3aae7cbbeb1c71f6633a61b729408c2d1a837dae064cca82ef2"
+                "sha256:31e2c58dbb67c99c289f51c16d899afedae292b978f8051efaf6262d8212f927",
+                "sha256:ea8e00d7992054c4c592aeb892f6ad51fe1b4d90cc6947cc45c45717c40ec537"
             ],
             "markers": "python_version >= '3.9'",
-            "version": "==80.0.1"
+            "version": "==80.3.1"
         },
         "six": {
             "hashes": [
@@ -1408,12 +1406,12 @@
         },
         "ultralytics": {
             "hashes": [
-                "sha256:8fa3d99f1c33b997d240409665a9331f65fec9b1a577d51ea0ab6c21eba2c1ae",
-                "sha256:c631aa1dea3146662228e9c8f7a9527b64786fdeeeb03d5bf537cec9282ac5da"
+                "sha256:1be69946a9eda84761b058b9c4ca6e813056c0125f8339f557aa3e941f81937d",
+                "sha256:c2dacd38327512fca860f5dfe4cebd159646b7c3042cec1548ba18c753f984fc"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.8'",
-            "version": "==8.3.121"
+            "version": "==8.3.128"
         },
         "ultralytics-thop": {
             "hashes": [
@@ -1535,11 +1533,11 @@
         },
         "yt-dlp": {
             "hashes": [
-                "sha256:1bfe0e660d1a70a09e27b2d58f92e30b1e2e362cc487829f2f824346ae49fb91",
-                "sha256:8ecb3aa218a3bebe431119f513a8972b9b9d992edf67168c00ab92329a03baec"
+                "sha256:53cd82bf13f12a1fe9c564b0004e001156b153c9247fa3cef14d1400ab359150",
+                "sha256:d01367d0c3ae94e35cb1e2eccb7a7c70e181c4ca448f4ee2374f26489d263603"
             ],
             "markers": "python_version >= '3.9'",
-            "version": "==2025.3.31"
+            "version": "==2025.4.30"
         },
         "zipp": {
             "hashes": [
