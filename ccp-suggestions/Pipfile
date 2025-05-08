@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 matplotlib = "*"
 opencv-python = "*"
-pandas = "*"
 pillow = "*"
 imread-from-url = "*"
 onnxruntime-gpu = "*"
@@ -20,6 +19,7 @@ Flask = "*"
 waitress = "*"
 google-cloud-storage = "*"
 numpy = "*"
+pandas = "*"
 
 [dev-packages]
 
