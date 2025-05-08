@@ -3,6 +3,8 @@ import json
 import numpy as np
 import pandas as pd
 from google.cloud import storage
+from itertools import combinations
+
 from src.static.constants import bucket_name, bucket_image_folder
 
 
@@ -85,6 +87,8 @@ class GenerateRecommendations:
         takes into account overlapping between products areas and what % the overlap represents
         """
         df_metadata = pd.DataFrame(metadata)
+        df_metadata["length"] = df_metadata["x2"] - df_metadata["x1"]
+        df_metadata["height"] = df_metadata["y2"] - df_metadata["y1"]
         df_metadata["area"] = df_metadata["height"] * df_metadata["length"]
 
         max_x1 = df_metadata["x1"].min()
@@ -108,3 +112,55 @@ class GenerateRecommendations:
             self.recommendations.append(
                 "La distribución de los productos es mala. Se encuentran muy pocos productos en un espacio muy grande. Esto significa que se está desperdiciando el espacio disponible para almacenar, o que necesita adquirir más productos para la demanda que está experimentando"
             )
+    
+    def calculate_overlapping_areas(self, metadata):
+        """
+        This method gives a score based on the percentage of overlap present in the image.
+        The algorithm shouldn't detect a significant overlap as that means that the products are cluttered.
+        A good distribution should be close to 0% of overlap
+        """
+        df_metadata = pd.DataFrame(metadata)
+        df_metadata["length"] = df_metadata["x2"] - df_metadata["x1"]
+        df_metadata["height"] = df_metadata["y2"] - df_metadata["y1"]
+        df_metadata["area"] = df_metadata["height"] * df_metadata["length"]
+
+        max_x1 = df_metadata["x1"].min()
+        max_x2 = df_metadata["x2"].max()
+        max_y1 = df_metadata["y1"].min()
+        max_y2 = df_metadata["y2"].max()
+        total_spread_area = (max_x2 - max_x1) * (max_y2 - max_y1)
+
+        def compute_overlapping_area(rect1, rect2):
+            x_overlap = max(0, min(rect1['x2'], rect2['x2']) - max(rect1['x1'], rect2['x1']))
+            y_overlap = max(0, min(rect1['y2'], rect2['y2']) - max(rect1['y1'], rect2['y1']))
+            return x_overlap * y_overlap
+        
+        overlapped_areas = []
+        for i, j in combinations(df_metadata.index, 2):
+            area = compute_overlapping_area(df_metadata.loc[i], df_metadata.loc[j])
+            overlapped_areas.append(area)
+        
+        total_overlapping_area = sum(overlapped_areas)
+        overlapping_score = total_overlapping_area / total_spread_area
+
+        if overlapping_score > 0.3:
+            self.recommendations.append(
+                "Se detectó que muchos productos se solapan entre ellos. Esto significa que su espacio no está organizado de forma correcta. Valide que cuenta con los productos necesarios para que los productos traseros de su espacio no sean inmediatamente visibles"
+            )
+        elif overlapping_score <= 0.3 and overlapping_score > 0.1:
+            self.recommendations.append(
+                "La organización de su espacio puede mejorar. El espacio cuenta con un orden general, sin embargo, los productos traseros son visibles. Esto puede significar que debe reorganizar teniendo en cuenta el tamaño, o agregar nuevos productos que cumplan la función de cubrir lo espacios vacíos"
+            )
+        elif overlapping_score <= 0.1:
+            self.recommendations.append(
+                "La distribución de los productos es buena. No se observa un solapamiento entre productos apreciable. Esto significa que sus espacios son agradables y que la busqueda de productos en su tienda es ágil y fácil de reemplazar"
+            )
+
+    def execute(self):
+        data = self.download_filtered_images()
+        for image in data:
+            self.analyze_size_parity(image["metadata"])
+            self.analyze_spread(image["metadata"])
+            self.calculate_overlapping_areas(image["metadata"])
+
+        return self.recommendations
