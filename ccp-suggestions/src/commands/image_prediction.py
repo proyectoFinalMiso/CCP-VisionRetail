@@ -1,18 +1,20 @@
 import cv2
 import json
+from datetime import datetime as dt
 from google.cloud import storage
 from io import BytesIO
 from ultralytics import YOLO
 
-from src.static.constants import model_path, bucket_name, bucket_image_folder
+from src.static.constants import model_path, bucket_name, bucket_image_folder, recommendations_topic
+from src.commands.common.pubsub import publish_message
 
 
 class PredictionModel:
     def __init__(
         self,
-        video_blob_path="https://storage.googleapis.com/ccp-recommendations-videos/training-videos/Training5.mp4",
+        body
     ):
-        self.blob_path = video_blob_path
+        self.blob_path = body['BlobPath']
         self.model_path = model_path
         self.model = self.model_initialization()
 
@@ -110,10 +112,21 @@ class PredictionModel:
 
         client = storage.Client()
         bucket = client.bucket(bucket_name)
+        now = dt.now().strftime("%Y-%m-%d_%H-%M-%S.%f")
+
+        message = []
+        
         for index, image in enumerate(top_5_predictions):
-            blob = bucket.blob(f"{bucket_image_folder}/frame_{index}.jpg")
+            blob = bucket.blob(f"{bucket_image_folder}/frame_{index}_{now}.jpg")
             image["image"].seek(0)
             blob.upload_from_file(image["image"], content_type="image/jpeg")
-
-            meta_blob = bucket.blob(f"{bucket_image_folder}/frame_metadata_{index}.json")
+            meta_blob = bucket.blob(f"{bucket_image_folder}/frame_metadata_{index}_{now}.json")
             meta_blob.upload_from_string(image["boxes_data"], content_type="application/json")
+
+            message.append({
+                "image": f"frame_{index}_{now}.jpg",
+                "metadata": f"frame_metadata_{index}_{now}.json"
+            })
+        
+        r = publish_message(recommendations_topic, message)
+        return {"response": r, "status_code": 200}
