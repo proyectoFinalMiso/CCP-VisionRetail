@@ -13,13 +13,13 @@ cap-from-youtube = "*"
 onnxruntime-directml = "*"
 ultralytics = "*"
 pika = "*"
-google-cloud-pubsub = "*"
 python-dotenv = "*"
 Flask = "*"
 waitress = "*"
 google-cloud-storage = "*"
 numpy = "*"
 pandas = "*"
+google-cloud-pubsub = "*"
 
 [dev-packages]
 
