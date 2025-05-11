@@ -15,6 +15,8 @@ class PredictionModel:
         body
     ):
         self.blob_path = body['BlobPath']
+        self.customer = body['Customer']
+        self.seller = body['Seller']
         self.model_path = model_path
         self.model = self.model_initialization()
 
@@ -128,5 +130,5 @@ class PredictionModel:
                 "metadata": f"frame_metadata_{index}_{now}.json"
             })
         
-        r = publish_message(recommendations_topic, message)
+        r = publish_message(recommendations_topic, {'customer': self.customer, 'seller': self.seller, 'message': message})
         return {"response": r, "status_code": 200}

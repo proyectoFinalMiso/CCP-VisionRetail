@@ -28,7 +28,7 @@ class SendEmail:
     
     def send_email(self, subject, html_body):
         EMAIL_SENDER = getenv("EMAIL_SENDER")
-        EMAIL_RECEIVER = getenv("EMAIL_RECEIVER")
+        EMAIL_RECEIVER = [self.body['customer'], [self.body['seller']]]
         SMTP_PASSWORD = getenv("SMTP_PASSWORD")
 
         msg = MIMEMultipart("alternative")
@@ -45,7 +45,7 @@ class SendEmail:
     
     def execute(self):
         grouped = defaultdict(list)
-        for rec in self.body:
+        for rec in self.body["message"]:
             grouped[rec["name"]].append(rec["message"])
         html_body = self.build_email_body(grouped)
         self.send_email("Recomendación de productos y tiendas", html_body)
