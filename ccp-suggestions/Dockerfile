@@ -14,4 +14,4 @@ COPY . .
 
 EXPOSE 3000
 
-CMD [ "pipenv", "run", "python", "app.py", "production"]
+CMD [ "pipenv", "run", "python", "application.py", "production"]
