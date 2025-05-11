@@ -1,0 +1,16 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+torch==2.2.2
+torchvision==0.17.2
+torchaudio==2.2.2
+
+ultralytics==8.1.25
+opencv-python
+pika
+python-dotenv
+Flask
+waitress
+google-cloud-storage
+numpy<2
+pandas
+google-cloud-pubsub
