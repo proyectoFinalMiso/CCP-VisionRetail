@@ -19,7 +19,7 @@ class GenerateRecommendations:
         bucket = client.bucket(bucket_name)
 
         data = []
-        for img_set in self.body:
+        for img_set in self.body['message']:
             img_name = img_set['image']
             meta_name = img_set['metadata']
 
@@ -48,37 +48,37 @@ class GenerateRecommendations:
         df_metadata["height"] = df_metadata["y2"] - df_metadata["y1"]
 
         mean_height = df_metadata["height"].mean()
-        var_height = df_metadata["height"].var()
+        var_height = df_metadata["height"].std()
         height_score = (mean_height - var_height) / (mean_height + var_height)
 
         if height_score >= 0.9:
             self.recommendations.append(
-                {"name": name, "message": "La altura de los productos es muy consistente. Esto significa que los clientes tendrán una percepción más positiva de los espacios en su tienda al garantizar una homogeneidad dimensional"}
+                {"name": name, "message": "La altura de los productos es muy consistente y están bien agrupados. Esto significa que los clientes tendrán una percepción más positiva de los espacios en su tienda ya que podrán encontrar los productos más facilmente"}
             )
         elif height_score < 0.9 and height_score >= 0.5:
             self.recommendations.append(
-                {"name": name, "message": "La altura de los productos tiene una variabilidad moderada. Para este caso, se recomienda agrupar productos con alturas y categorías similares. Si es posible, traslade los productos de menor rotación a otro espacio y consiga un producto de un tamaño y categoría similar"}
+                {"name": name, "message": "Su espacio tiene productos con alturas similares, pero podría mejorar. Se recomienda agrupar productos con alturas y categorías similares. Si es posible, traslade los productos de menor rotación a otro espacio y consiga un producto de un tamaño y categoría similar"}
             )
         elif height_score < 0.5:
             self.recommendations.append(
-                {"name": name, "message": "La altura de los productos no es suficientemente consistente. Esto significa que los productos que está mostrando probablemente tienen propósitos distintos. Es muy importante mantener espacios homogéneos con productos similares para mejorar la experiencia de los compradores"}
+                {"name": name, "message": "La altura de los productos en su espacio es excesivamente diferente. Esto significa que los productos que está mostrando probablemente tienen propósitos distintos. Es muy importante mantener espacios homogéneos con productos similares para que sus clientes no tengan dificultades en encontrar lo que buscan"}
             )
 
         mean_length = df_metadata["length"].mean()
-        var_length = df_metadata["length"].var()
+        var_length = df_metadata["length"].std()
         length_score = (mean_length - var_length) / (mean_length + var_length)
 
         if length_score >= 0.9:
             self.recommendations.append(
-                {"name": name, "message": "El ancho de los productos es muy consistente. Los clientes aprecian las tiendas que utilizan los anchos de las estanterías forma correcta ya que se ven más completas"}
+                {"name": name, "message": "Los productos están bien agrupados por ancho y usan el espacio adecuadamente. Los clientes aprecian las tiendas organizadas en horizontal ya que las hace ver más abundantes"}
             )
         elif length_score < 0.9 and height_score >= 0.5:
             self.recommendations.append(
-                {"name": name, "message": "El ancho de los productos es variable. Esto significa que tendrá que ser creativo en la organización de los productos y utilizar los productos más delgados para las esquinas de las estanterías. No olvide garantizar que los tipos de productos se mantengan juntos"}
+                {"name": name, "message": "Debe trabajar en la organización de los productos para garantizar que los productos estén bien distribuidos por ancho. Utilice los productos más delgados para las esquinas de las estanterías. Recuerde que los propósitos de los productos sean los mismos"}
             )
         elif length_score < 0.5:
             self.recommendations.append(
-                {"name": name, "message": "El ancho de los productos no es consistente. Debe intentar trasladar productos entre estanterías para mejorar la distribución de los productos en su tienda. Es muy importante que los clientes no tengan la percepción de que los espacios están vacíos"}
+                {"name": name, "message": "El ancho de los productos es excesivamente diferente. Debe organizar sus espacios para que productos de tamaño y propósito similar se mantengan en posiciones cercanas. Es muy importante que los clientes no tengan la percepción de que los espacios están vacíos"}
             )
 
     def analyze_spread(self, metadata, name: int):
@@ -101,18 +101,23 @@ class GenerateRecommendations:
         total_surface_area = df_metadata["area"].sum()
 
         spread_score = total_surface_area / total_spread_area
+        print(spread_score)
 
-        if spread_score >= 0.9:
+        if spread_score < 1 and spread_score >= 0.8:
             self.recommendations.append(
-                {"name": name, "message": "La distribución de los productos es muy buena. Una estantería agradable debería tener pocos espacios disponibles en la parte frontal"}
+                {"name": name, "message": "Sus espacios están eficientemente distribuidos ya que utliza la mayoría del espacio disponible para ubicar sus productos"}
             )
-        elif spread_score < 0.9 and spread_score >= 0.5:
+        elif spread_score < 0.8 and spread_score >= 0.5:
             self.recommendations.append(
-                {"name": name, "message": "La distribución de los productos es mejorable. Se detectó que los productos en la imagen no están lo suficientemente cerca entre ellos, o no están organizados en su espacio. Si tiene espacios vacíos, es necesario adquirir productos que le permitan suplir la necesidad"}
+                {"name": name, "message": "Se puede mejorar el uso del espacio. Se detectó que los productos en la imagen no están lo suficientemente cerca entre ellos, o no están organizados en su espacio. Si tiene espacios vacíos, es necesario adquirir productos que le permitan suplir la necesidad"}
             )
         elif spread_score < 0.5:
             self.recommendations.append(
-                {"name": name, "message": "La distribución de los productos es mala. Se encuentran muy pocos productos en un espacio muy grande. Esto significa que se está desperdiciando el espacio disponible para almacenar, o que necesita adquirir más productos para la demanda que está experimentando"}
+                {"name": name, "message": "El uso del espacio no es el adecuado. Se encuentran muy pocos productos en un espacio muy grande. Esto significa que se está desperdiciando el espacio disponible para almacenar, o que necesita adquirir más productos para la demanda que está experimentando"}
+            )
+        elif spread_score >= 1:
+            self.recommendations.append(
+                {"name": name, "message": "Tiene un exceso de productos en su espacio. Esto significa que sus productos están muy acumulados, provocando que el espacio tenga un efecto negativo sobre los clientes"}
             )
     
     def calculate_overlapping_areas(self, metadata, name: int):
@@ -144,6 +149,7 @@ class GenerateRecommendations:
         
         total_overlapping_area = sum(overlapped_areas)
         overlapping_score = total_overlapping_area / total_spread_area
+        print(overlapping_score)
 
         if overlapping_score > 0.3:
             self.recommendations.append(
@@ -155,7 +161,7 @@ class GenerateRecommendations:
             )
         elif overlapping_score <= 0.1:
             self.recommendations.append(
-                {"name": name, "message": "La distribución de los productos es buena. No se observa un solapamiento entre productos apreciable. Esto significa que sus espacios son agradables y que la busqueda de productos en su tienda es ágil y fácil de reemplazar"}
+                {"name": name, "message": "Los productos se encuentran ordenados correctamente. Esto significa que sus espacios son agradables y que la busqueda de productos en su tienda es ágil y fácil de reemplazar"}
             )
 
     def execute(self):
@@ -165,5 +171,11 @@ class GenerateRecommendations:
             self.analyze_spread(image["metadata"], image['name'])
             self.calculate_overlapping_areas(image["metadata"], image['name'])
         
-        r = publish_message(email_topic, self.recommendations)
+        message = {
+            "customer": self.body['customer'],
+            "seller": self.body['seller'],
+            "message": self.recommendations
+        }
+        
+        r = publish_message(email_topic, message)
         return {"response": r, "status_code": 200}
