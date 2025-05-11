@@ -12,17 +12,20 @@ def health_check():
 @blueprint.post('/predict')
 def predict_model():
     body = request.get_json()
+    print(body)
     r = PredictionModel(body).execute()
     return jsonify(r['response']), r['status_code']
 
 @blueprint.post('/recommendations')
 def create_recommendations():
     body = request.get_json()
+    print(body)
     r = GenerateRecommendations(body).execute()
     return jsonify(r['response']), r['status_code']
 
 @blueprint.post('/mail_recommendations')
 def send_recommendations():
     body = request.get_json()
+    print(body)
     r = SendEmail(body).execute()
     return jsonify(r['response']), r['status_code']
