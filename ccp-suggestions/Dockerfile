@@ -15,4 +15,4 @@ COPY . .
 
 EXPOSE 3000
 
-CMD ["python", "application.py", "production"]
+CMD ["python", "application.py", "dev"]
